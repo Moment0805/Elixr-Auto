@@ -5,7 +5,7 @@ import { Input } from '../ui/input';
 import { Label } from '../ui/label';
 import { Textarea } from '../ui/textarea';
 import { MapPin, Phone, Mail, MessageCircle, Instagram, Twitter } from 'lucide-react';
-import { toast } from 'sonner@2.0.3';
+import { toast } from 'sonner';
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({
