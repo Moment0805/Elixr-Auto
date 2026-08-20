@@ -1,321 +1,192 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
+import { Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
 import { Card, CardContent } from '../ui/card';
 import { Badge } from '../ui/badge';
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
 import { ImageWithFallback } from '../figma/ImageWithFallback';
-import { CheckCircle, MapPin, Gauge, Calendar, Search } from 'lucide-react';
+import { CheckCircle, MapPin, Gauge, Calendar, Search, SlidersHorizontal, Star } from 'lucide-react';
+import { listings, getUser } from '../../lib/mockData';
+import { SellerSnippet, StarRating } from '../SellerSnippet';
+import SEO from '../SEO';
+import { staggerContainer, fadeUp } from '../../lib/animations';
 
 export default function ListingsPage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedMake, setSelectedMake] = useState('all');
   const [selectedYear, setSelectedYear] = useState('all');
   const [selectedLocation, setSelectedLocation] = useState('all');
+  const [minRating, setMinRating] = useState('all');
+  const [sortBy, setSortBy] = useState('newest');
 
-  const listings = [
-    {
-      id: 1,
-      title: '2023 Mercedes-Benz S-Class',
-      make: 'Mercedes-Benz',
-      price: '₦85,000,000',
-      image: 'https://images.unsplash.com/photo-1650256213562-487db281610b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxibGFjayUyMGx1eHVyeSUyMHNlZGFufGVufDF8fHx8MTc2MTQzODMyNnww&ixlib=rb-4.1.0&q=80&w=1080',
-      year: '2023',
-      mileage: '8,500 km',
-      transmission: 'Automatic',
-      location: 'Lagos',
-      condition: 'Excellent',
-      verified: true,
-    },
-    {
-      id: 2,
-      title: '2022 Range Rover Sport',
-      make: 'Land Rover',
-      price: '₦72,000,000',
-      image: 'https://images.unsplash.com/photo-1570829194611-71a926d70ff8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxsdXh1cnklMjBzdXYlMjBjYXJ8ZW58MXx8fHwxNzYxNDEyMzQ4fDA&ixlib=rb-4.1.0&q=80&w=1080',
-      year: '2022',
-      mileage: '15,000 km',
-      transmission: 'Automatic',
-      location: 'Abuja',
-      condition: 'Excellent',
-      verified: true,
-    },
-    {
-      id: 3,
-      title: '2024 Porsche 911 Carrera',
-      make: 'Porsche',
-      price: '₦95,000,000',
-      image: 'https://images.unsplash.com/photo-1517153192978-b2e379ac0710?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxzcG9ydHMlMjBjYXIlMjBnb2xkfGVufDF8fHx8MTc2MTQzOTA1NHww&ixlib=rb-4.1.0&q=80&w=1080',
-      year: '2024',
-      mileage: '2,000 km',
-      transmission: 'Automatic',
-      location: 'Lagos',
-      condition: 'Brand New',
-      verified: true,
-    },
-    {
-      id: 4,
-      title: '2021 Toyota Camry XLE',
-      make: 'Toyota',
-      price: '₦18,500,000',
-      image: 'https://images.unsplash.com/photo-1624578571415-09e9b1991929?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx0b3lvdGElMjBjYW1yeSUyMHNlZGFufGVufDF8fHx8MTc2MTQzMDM5MXww&ixlib=rb-4.1.0&q=80&w=1080',
-      year: '2021',
-      mileage: '32,000 km',
-      transmission: 'Automatic',
-      location: 'Port Harcourt',
-      condition: 'Very Good',
-      verified: true,
-    },
-    {
-      id: 5,
-      title: '2023 Honda Accord Touring',
-      make: 'Honda',
-      price: '₦22,000,000',
-      image: 'https://images.unsplash.com/photo-1718037322646-065357b8173b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxob25kYSUyMGFjY29yZCUyMGNhcnxlbnwxfHx8fDE3NjE0MzkxNzl8MA&ixlib=rb-4.1.0&q=80&w=1080',
-      year: '2023',
-      mileage: '12,000 km',
-      transmission: 'Automatic',
-      location: 'Lagos',
-      condition: 'Excellent',
-      verified: true,
-    },
-    {
-      id: 6,
-      title: '2022 Lexus RX 350',
-      make: 'Lexus',
-      price: '₦45,000,000',
-      image: 'https://images.unsplash.com/photo-1742941158083-be03727c216b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxsZXh1cyUyMHN1diUyMGx1eHVyeXxlbnwxfHx8fDE3NjE0MzkxNzl8MA&ixlib=rb-4.1.0&q=80&w=1080',
-      year: '2022',
-      mileage: '18,500 km',
-      transmission: 'Automatic',
-      location: 'Abuja',
-      condition: 'Excellent',
-      verified: true,
-    },
-    {
-      id: 7,
-      title: '2023 BMW 5 Series',
-      make: 'BMW',
-      price: '₦52,000,000',
-      image: 'https://images.unsplash.com/photo-1734299388217-2ebc605ef43f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxibXclMjBzZWRhbiUyMGJsYWNrfGVufDF8fHx8MTc2MTQzOTE3OXww&ixlib=rb-4.1.0&q=80&w=1080',
-      year: '2023',
-      mileage: '10,000 km',
-      transmission: 'Automatic',
-      location: 'Lagos',
-      condition: 'Excellent',
-      verified: true,
-    },
-    {
-      id: 8,
-      title: '2024 Audi A6',
-      make: 'Audi',
-      price: '₦58,000,000',
-      image: 'https://images.unsplash.com/photo-1684155391823-15645c20d488?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxhdWRpJTIwbHV4dXJ5JTIwY2FyfGVufDF8fHx8MTc2MTQzOTE4MHww&ixlib=rb-4.1.0&q=80&w=1080',
-      year: '2024',
-      mileage: '5,000 km',
-      transmission: 'Automatic',
-      location: 'Abuja',
-      condition: 'Brand New',
-      verified: true,
-    },
-    {
-      id: 9,
-      title: '2023 Tesla Model 3',
-      make: 'Tesla',
-      price: '₦38,000,000',
-      image: 'https://images.unsplash.com/photo-1610470850940-27b52ca7c0fe?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx0ZXNsYSUyMGVsZWN0cmljJTIwY2FyfGVufDF8fHx8MTc2MTQwMzk4NXww&ixlib=rb-4.1.0&q=80&w=1080',
-      year: '2023',
-      mileage: '8,000 km',
-      transmission: 'Automatic',
-      location: 'Lagos',
-      condition: 'Excellent',
-      verified: true,
-    },
-  ];
+  const makes = [...new Set(listings.map((l) => l.make))];
+  const years = [...new Set(listings.map((l) => l.year))];
+  const locations = [...new Set(listings.map((l) => l.location))];
 
-  const filteredListings = listings.filter((listing) => {
-    const matchesSearch = listing.title.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesMake = selectedMake === 'all' || listing.make === selectedMake;
-    const matchesYear = selectedYear === 'all' || listing.year === selectedYear;
-    const matchesLocation = selectedLocation === 'all' || listing.location === selectedLocation;
-    
-    return matchesSearch && matchesMake && matchesYear && matchesLocation;
-  });
+  const filtered = useMemo(() => {
+    let result = listings.filter((l) => {
+      const matchesSearch = l.title.toLowerCase().includes(searchQuery.toLowerCase());
+      const matchesMake = selectedMake === 'all' || l.make === selectedMake;
+      const matchesYear = selectedYear === 'all' || l.year === selectedYear;
+      const matchesLocation = selectedLocation === 'all' || l.location === selectedLocation;
+      const seller = getUser(l.seller_id);
+      const matchesRating = minRating === 'all' || (seller && seller.trust_score >= Number(minRating));
+      return matchesSearch && matchesMake && matchesYear && matchesLocation && matchesRating;
+    });
+
+    if (sortBy === 'price-low') result = [...result].sort((a, b) => a.price_value - b.price_value);
+    if (sortBy === 'price-high') result = [...result].sort((a, b) => b.price_value - a.price_value);
+    if (sortBy === 'rating') result = [...result].sort((a, b) => (getUser(b.seller_id)?.trust_score || 0) - (getUser(a.seller_id)?.trust_score || 0));
+    return result;
+  }, [searchQuery, selectedMake, selectedYear, selectedLocation, minRating, sortBy]);
 
   return (
-    <div className="bg-white min-h-screen">
+    <div className="bg-[#0A0A0B] min-h-screen">
+      <SEO title="Browse Cars" description="Browse verified car listings from trusted sellers across Africa." canonicalUrl="/listings" />
+
       {/* Header */}
-      <section className="bg-[#0C0C0C] text-white py-16">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center">
-            <h1 className="text-4xl md:text-5xl mb-4 text-white">
-              Premium Vehicle Listings
-            </h1>
-            <p className="text-xl text-[#C0C0C0] max-w-2xl mx-auto">
-              Browse our collection of verified vehicles from trusted dealers
-            </p>
-          </div>
+      <section className="relative overflow-hidden border-b border-white/10">
+        <div className="absolute top-0 right-0 h-72 w-72 rounded-full bg-amber-500/10 blur-[100px]" />
+        <div className="relative container mx-auto px-4 sm:px-6 lg:px-8 py-14">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
+            <h1 className="text-4xl md:text-5xl font-bold text-white mb-3">Browse Cars</h1>
+            <p className="text-neutral-400 text-lg max-w-2xl">Verified vehicles from trusted sellers. Filter by rating to trade with confidence.</p>
+          </motion.div>
         </div>
       </section>
 
       {/* Filters */}
-      <section className="bg-gray-50 py-8 border-b">
+      <section className="bg-white/[0.02] py-5 border-b border-white/10 sticky top-16 z-30 backdrop-blur-xl">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            {/* Search */}
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
+            <div className="relative col-span-2 md:col-span-1 lg:col-span-2">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-neutral-500" size={18} />
               <Input
                 placeholder="Search cars..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-10"
+                className="pl-10 bg-white/5 border-white/10 text-white placeholder:text-neutral-500"
               />
             </div>
-
-            {/* Make Filter */}
             <Select value={selectedMake} onValueChange={setSelectedMake}>
-              <SelectTrigger>
-                <SelectValue placeholder="All Makes" />
-              </SelectTrigger>
+              <SelectTrigger className="bg-white/5 border-white/10 text-white"><SelectValue placeholder="Make" /></SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">All Makes</SelectItem>
-                <SelectItem value="Mercedes-Benz">Mercedes-Benz</SelectItem>
-                <SelectItem value="Toyota">Toyota</SelectItem>
-                <SelectItem value="Honda">Honda</SelectItem>
-                <SelectItem value="BMW">BMW</SelectItem>
-                <SelectItem value="Audi">Audi</SelectItem>
-                <SelectItem value="Lexus">Lexus</SelectItem>
-                <SelectItem value="Porsche">Porsche</SelectItem>
-                <SelectItem value="Tesla">Tesla</SelectItem>
-                <SelectItem value="Land Rover">Land Rover</SelectItem>
+                {makes.map((m) => <SelectItem key={m} value={m}>{m}</SelectItem>)}
               </SelectContent>
             </Select>
-
-            {/* Year Filter */}
             <Select value={selectedYear} onValueChange={setSelectedYear}>
-              <SelectTrigger>
-                <SelectValue placeholder="All Years" />
-              </SelectTrigger>
+              <SelectTrigger className="bg-white/5 border-white/10 text-white"><SelectValue placeholder="Year" /></SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">All Years</SelectItem>
-                <SelectItem value="2024">2024</SelectItem>
-                <SelectItem value="2023">2023</SelectItem>
-                <SelectItem value="2022">2022</SelectItem>
-                <SelectItem value="2021">2021</SelectItem>
-                <SelectItem value="2020">2020</SelectItem>
+                {years.map((y) => <SelectItem key={y} value={y}>{y}</SelectItem>)}
               </SelectContent>
             </Select>
-
-            {/* Location Filter */}
             <Select value={selectedLocation} onValueChange={setSelectedLocation}>
-              <SelectTrigger>
-                <SelectValue placeholder="All Locations" />
-              </SelectTrigger>
+              <SelectTrigger className="bg-white/5 border-white/10 text-white"><SelectValue placeholder="Location" /></SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">All Locations</SelectItem>
-                <SelectItem value="Lagos">Lagos</SelectItem>
-                <SelectItem value="Abuja">Abuja</SelectItem>
-                <SelectItem value="Port Harcourt">Port Harcourt</SelectItem>
-                <SelectItem value="Kano">Kano</SelectItem>
-                <SelectItem value="Ibadan">Ibadan</SelectItem>
+                {locations.map((l) => <SelectItem key={l} value={l}>{l}</SelectItem>)}
+              </SelectContent>
+            </Select>
+            <Select value={minRating} onValueChange={setMinRating}>
+              <SelectTrigger className="bg-white/5 border-white/10 text-white"><SelectValue placeholder="Rating" /></SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">Any Rating</SelectItem>
+                <SelectItem value="4.5">4.5★ & up</SelectItem>
+                <SelectItem value="4">4★ & up</SelectItem>
+                <SelectItem value="3">3★ & up</SelectItem>
               </SelectContent>
             </Select>
           </div>
-
-          <div className="mt-4 text-gray-600">
-            Showing {filteredListings.length} of {listings.length} vehicles
+          <div className="flex items-center justify-between mt-3">
+            <p className="text-neutral-500 text-sm flex items-center gap-1.5"><SlidersHorizontal size={14} /> {filtered.length} vehicles</p>
+            <Select value={sortBy} onValueChange={setSortBy}>
+              <SelectTrigger className="w-[170px] h-8 bg-white/5 border-white/10 text-white text-sm"><SelectValue placeholder="Sort" /></SelectTrigger>
+              <SelectContent>
+                <SelectItem value="newest">Newest</SelectItem>
+                <SelectItem value="price-low">Price: Low to High</SelectItem>
+                <SelectItem value="price-high">Price: High to Low</SelectItem>
+                <SelectItem value="rating">Seller Rating</SelectItem>
+              </SelectContent>
+            </Select>
           </div>
         </div>
       </section>
 
       {/* Listings Grid */}
-      <section className="py-12">
+      <section className="py-10">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          {filteredListings.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {filteredListings.map((listing) => (
-                <Card key={listing.id} className="overflow-hidden hover:shadow-xl transition-shadow border-[#D4AF37]/20">
-                  <div className="relative">
-                    <ImageWithFallback
-                      src={listing.image}
-                      alt={listing.title}
-                      className="w-full h-64 object-cover"
-                    />
-                    {listing.verified && (
-                      <Badge className="absolute top-4 right-4 bg-[#D4AF37] text-[#0C0C0C] border-0">
-                        <CheckCircle size={14} className="mr-1" />
-                        Verified
-                      </Badge>
-                    )}
-                    <Badge className="absolute top-4 left-4 bg-[#0C0C0C] text-white border-0">
-                      {listing.condition}
-                    </Badge>
-                  </div>
+          {filtered.length > 0 ? (
+            <motion.div
+              variants={staggerContainer}
+              initial="hidden"
+              animate="visible"
+              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
+            >
+              {filtered.map((listing) => {
+                const seller = getUser(listing.seller_id);
+                return (
+                  <motion.div key={listing.id} variants={fadeUp}>
+                    <Link to={`/listings/${listing.id}`}>
+                      <Card className="group overflow-hidden border-white/10 bg-white/[0.03] hover:bg-white/[0.06] hover:border-amber-500/30 transition-all duration-300 hover:-translate-y-1 h-full">
+                        <div className="relative overflow-hidden rounded-t-xl">
+                          <ImageWithFallback src={listing.image} alt={listing.title} className="w-full h-44 object-cover group-hover:scale-105 transition-transform duration-500" />
+                          <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                          {listing.verified && (
+                            <Badge className="absolute top-2.5 right-2.5 bg-emerald-500/90 text-white border-0 backdrop-blur-sm text-[11px]">
+                              <CheckCircle size={11} className="mr-1" /> Verified
+                            </Badge>
+                          )}
+                          {listing.status === 'Sold' && (
+                            <Badge className="absolute top-2.5 left-2.5 bg-red-500/90 text-white border-0 backdrop-blur-sm text-[11px]">Sold</Badge>
+                          )}
+                          <div className="absolute bottom-2.5 left-2.5 right-2.5">
+                            <p className="text-white font-semibold text-base drop-shadow leading-tight">{listing.title}</p>
+                          </div>
+                        </div>
 
-                  <CardContent className="p-6">
-                    <h3 className="text-xl mb-2 text-[#0C0C0C]">{listing.title}</h3>
-                    <p className="text-2xl text-[#D4AF37] mb-4">{listing.price}</p>
-
-                    <div className="space-y-2 mb-4">
-                      <div className="flex items-center text-gray-600 text-sm">
-                        <Calendar size={16} className="mr-2" />
-                        <span>{listing.year}</span>
-                      </div>
-                      <div className="flex items-center text-gray-600 text-sm">
-                        <Gauge size={16} className="mr-2" />
-                        <span>{listing.mileage} • {listing.transmission}</span>
-                      </div>
-                      <div className="flex items-center text-gray-600 text-sm">
-                        <MapPin size={16} className="mr-2" />
-                        <span>{listing.location}, Nigeria</span>
-                      </div>
-                    </div>
-
-                    <Button
-                      className="w-full bg-[#D4AF37] text-[#0C0C0C] hover:bg-[#C0C0C0]"
-                      onClick={() => window.open('https://wa.me/2348138964310', '_blank')}
-                    >
-                      Contact Dealer
-                    </Button>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
+                        <CardContent className="p-4">
+                          <p className="text-xl font-bold text-amber-400 mb-2.5">{listing.price}</p>
+                          <div className="flex flex-wrap gap-x-3 gap-y-1 text-neutral-500 text-xs mb-3">
+                            <span className="flex items-center gap-1"><Calendar size={12} />{listing.year}</span>
+                            <span className="flex items-center gap-1"><Gauge size={12} />{listing.mileage}</span>
+                            <span className="flex items-center gap-1"><MapPin size={12} />{listing.location}</span>
+                          </div>
+                          {seller && (
+                            <div className="flex items-center justify-between pt-3 border-t border-white/5">
+                              <div className="flex items-center gap-1.5">
+                                <img src={seller.avatar_url} alt={seller.username} className="h-6 w-6 rounded-full border border-amber-500/20" />
+                                <span className="text-xs text-neutral-300">{seller.username}</span>
+                              </div>
+                              <div className="flex items-center gap-1">
+                                <StarRating value={seller.trust_score} size={11} />
+                              </div>
+                            </div>
+                          )}
+                          <Button className="w-full mt-3 bg-amber-400 text-neutral-900 hover:bg-amber-300 text-sm font-semibold h-9">
+                            Message Seller
+                          </Button>
+                        </CardContent>
+                      </Card>
+                    </Link>
+                  </motion.div>
+                );
+              })}
+            </motion.div>
           ) : (
-            <div className="text-center py-16">
-              <p className="text-xl text-gray-600">No vehicles found matching your filters.</p>
+            <div className="text-center py-20">
+              <p className="text-neutral-400 text-lg mb-4">No vehicles match your filters.</p>
               <Button
-                className="mt-4 bg-[#D4AF37] text-[#0C0C0C] hover:bg-[#C0C0C0]"
-                onClick={() => {
-                  setSearchQuery('');
-                  setSelectedMake('all');
-                  setSelectedYear('all');
-                  setSelectedLocation('all');
-                }}
+                className="bg-amber-400 text-neutral-900 hover:bg-amber-300"
+                onClick={() => { setSearchQuery(''); setSelectedMake('all'); setSelectedYear('all'); setSelectedLocation('all'); setMinRating('all'); }}
               >
                 Clear Filters
               </Button>
             </div>
           )}
-        </div>
-      </section>
-
-      {/* CTA Section */}
-      <section className="bg-[#D4AF37] py-12">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl mb-4 text-[#0C0C0C]">
-            Can't Find What You're Looking For?
-          </h2>
-          <p className="text-lg text-[#0C0C0C] mb-6">
-            Contact us and we'll help you find your perfect vehicle
-          </p>
-          <Button
-            className="bg-[#0C0C0C] text-white hover:bg-[#0C0C0C]/90"
-            onClick={() => window.open('https://wa.me/2348138964310', '_blank')}
-          >
-            WhatsApp Us Now
-          </Button>
         </div>
       </section>
     </div>

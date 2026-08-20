@@ -1,211 +1,136 @@
+import { motion } from 'framer-motion';
 import { Card, CardContent } from '../ui/card';
 import { ImageWithFallback } from '../figma/ImageWithFallback';
 import { Shield, Target, TrendingUp, Award } from 'lucide-react';
+import SEO from '../SEO';
+import { staggerContainer, fadeUp, slideInLeft } from '../../lib/animations';
 
 export default function AboutPage() {
   const values = [
-    {
-      icon: Shield,
-      title: 'Integrity',
-      description: 'We build trust through transparency and honesty in every transaction.',
-    },
-    {
-      icon: Target,
-      title: 'Precision',
-      description: 'Every detail matters. We ensure accuracy in all listings and communications.',
-    },
-    {
-      icon: TrendingUp,
-      title: 'Innovation',
-      description: 'Embracing technology to revolutionize the automotive marketplace.',
-    },
-    {
-      icon: Award,
-      title: 'Premium Experience',
-      description: 'Delivering gold-standard service to both buyers and dealers.',
-    },
+    { icon: Shield, title: 'Integrity', description: 'We build trust through transparency and honesty in every transaction.' },
+    { icon: Target, title: 'Precision', description: 'Every detail matters. We ensure accuracy in all listings and communications.' },
+    { icon: TrendingUp, title: 'Innovation', description: 'Embracing technology to revolutionize the automotive marketplace.' },
+    { icon: Award, title: 'Premium Experience', description: 'Delivering gold-standard service to both buyers and sellers.' },
+  ];
+
+  const stats = [
+    { value: '500+', label: 'Verified Sellers' },
+    { value: '2,000+', label: 'Active Listings' },
+    { value: '10,000+', label: 'Happy Customers' },
+    { value: '4.8★', label: 'Avg. Trust Score' },
   ];
 
   return (
-    <div className="bg-white">
-      {/* Hero Section */}
-      <section className="relative h-[400px] overflow-hidden">
-        <div className="absolute inset-0">
-          <ImageWithFallback
-            src="https://images.unsplash.com/photo-1745421977200-77ced89731c3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxwcmVtaXVtJTIwYXV0b21vYmlsZXxlbnwxfHx8fDE3NjE0MzkwNTR8MA&ixlib=rb-4.1.0&q=80&w=1080"
-            alt="Premium automobiles"
-            className="w-full h-full object-cover"
-          />
-          <div className="absolute inset-0 bg-[#0C0C0C]/70"></div>
-        </div>
+    <div className="bg-[#0A0A0B]">
+      <SEO title="About" description="Redefining automotive transactions through trust and technology." canonicalUrl="/about" />
 
-        <div className="relative container mx-auto px-4 sm:px-6 lg:px-8 h-full flex items-center">
-          <div className="max-w-3xl text-white">
-            <h1 className="text-4xl md:text-5xl mb-4 text-white">
-              About ElixirAutoX
-            </h1>
-            <p className="text-xl text-[#C0C0C0]">
-              Redefining automotive transactions through trust, technology, and premium experiences
-            </p>
-          </div>
+      {/* Hero */}
+      <section className="relative overflow-hidden border-b border-white/10">
+        <div className="absolute inset-0">
+          <ImageWithFallback src="https://images.unsplash.com/photo-1745421977200-77ced89731c3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080" alt="Premium automobiles" className="w-full h-full object-cover" />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#0A0A0B] via-[#0A0A0B]/80 to-[#0A0A0B]/40" />
+        </div>
+        <div className="relative container mx-auto px-4 sm:px-6 lg:px-8 py-24">
+          <motion.div initial="hidden" animate="visible" variants={staggerContainer} className="max-w-3xl">
+            <motion.h1 variants={fadeUp} className="text-4xl md:text-5xl font-bold text-white mb-4">About ElixrAuto</motion.h1>
+            <motion.p variants={fadeUp} className="text-xl text-neutral-300">Redefining automotive transactions through trust, technology, and a peer-to-peer community.</motion.p>
+          </motion.div>
         </div>
       </section>
 
-      {/* Story Section */}
-      <section className="py-16 bg-white">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-4xl mx-auto">
-            <h2 className="text-3xl md:text-4xl mb-6 text-[#0C0C0C] text-center">
-              Our Story
-            </h2>
-            <div className="space-y-6 text-lg text-gray-700">
-              <p>
-                ElixirAutoX was born from a simple yet powerful vision: to create a trusted 
-                marketplace where car buyers and dealers can connect with complete confidence. 
-                We saw a gap in the African automotive market—a lack of transparency, verification, 
-                and trust that left both buyers and sellers vulnerable.
-              </p>
-              <p>
-                Our platform bridges this gap by implementing rigorous dealer verification processes, 
-                ensuring every listing is accurate and authentic, and facilitating seamless 
-                communication between all parties. We don't just connect people with cars; 
-                we connect them with peace of mind.
-              </p>
-              <p>
-                Today, ElixirAutoX stands as the gold standard in automotive deals, trusted by 
-                thousands of buyers and hundreds of verified dealers across Africa. We're not 
-                just building a marketplace—we're building a movement toward transparent, 
-                technology-driven automotive commerce.
-              </p>
-            </div>
-          </div>
+      {/* Story */}
+      <section className="py-20">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-3xl">
+          <motion.h2 variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }} className="text-3xl font-bold text-white text-center mb-8">Our Story</motion.h2>
+          <motion.div variants={staggerContainer} initial="hidden" whileInView="visible" viewport={{ once: true }} className="space-y-5 text-neutral-300 text-lg leading-relaxed">
+            <motion.p variants={fadeUp}>ElixrAuto was born from a simple vision: a trusted marketplace where car buyers and sellers connect directly, with complete confidence. We saw a gap in the African automotive market — a lack of transparency that left both sides vulnerable.</motion.p>
+            <motion.p variants={fadeUp}>Our platform bridges that gap with rigorous seller verification, a reputation system powered by two-way reviews, and on-platform messaging that protects privacy. We don't just connect people with cars — we connect them with peace of mind.</motion.p>
+            <motion.p variants={fadeUp}>Today, ElixrAuto stands as the gold standard in automotive deals, trusted by thousands of buyers and verified sellers across Africa.</motion.p>
+          </motion.div>
         </div>
       </section>
 
       {/* Vision & Mission */}
-      <section className="py-16 bg-gray-50">
+      <section className="py-16 bg-white/[0.02] border-y border-white/10">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 max-w-6xl mx-auto">
-            <Card className="border-[#D4AF37] border-2">
-              <CardContent className="pt-8 text-center">
-                <div className="w-20 h-20 bg-[#D4AF37] rounded-full flex items-center justify-center mx-auto mb-6">
-                  <Target className="text-[#0C0C0C]" size={40} />
-                </div>
-                <h3 className="text-2xl mb-4 text-[#0C0C0C]">Our Vision</h3>
-                <p className="text-gray-700 text-lg">
-                  To redefine auto transactions in Africa through trust and technology, 
-                  becoming the most trusted automotive marketplace on the continent.
-                </p>
-              </CardContent>
-            </Card>
-
-            <Card className="border-[#D4AF37] border-2">
-              <CardContent className="pt-8 text-center">
-                <div className="w-20 h-20 bg-[#D4AF37] rounded-full flex items-center justify-center mx-auto mb-6">
-                  <TrendingUp className="text-[#0C0C0C]" size={40} />
-                </div>
-                <h3 className="text-2xl mb-4 text-[#0C0C0C]">Our Mission</h3>
-                <p className="text-gray-700 text-lg">
-                  To build trust between car buyers and verified dealers by providing accurate 
-                  information, seamless communication, and innovative payment solutions.
-                </p>
-              </CardContent>
-            </Card>
-          </div>
-        </div>
-      </section>
-
-      {/* Values Section */}
-      <section className="py-16 bg-[#0C0C0C] text-white">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl mb-4 text-[#D4AF37]">
-              Our Core Values
-            </h2>
-            <p className="text-lg text-[#C0C0C0] max-w-2xl mx-auto">
-              The principles that guide everything we do at ElixirAutoX
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {values.map((value, index) => (
-              <Card key={index} className="bg-white/5 border-[#D4AF37]/20 hover:bg-white/10 transition-colors">
-                <CardContent className="pt-6 text-center">
-                  <div className="w-16 h-16 bg-[#D4AF37] rounded-full flex items-center justify-center mx-auto mb-4">
-                    <value.icon className="text-[#0C0C0C]" size={32} />
-                  </div>
-                  <h3 className="text-xl mb-3 text-[#D4AF37]">{value.title}</h3>
-                  <p className="text-[#C0C0C0]">{value.description}</p>
-                </CardContent>
-              </Card>
+          <motion.div variants={staggerContainer} initial="hidden" whileInView="visible" viewport={{ once: true }} className="grid md:grid-cols-2 gap-6 max-w-5xl mx-auto">
+            {[{ icon: Target, title: 'Our Vision', text: 'To redefine auto transactions in Africa through trust and technology, becoming the most trusted peer-to-peer automotive marketplace on the continent.' },
+              { icon: TrendingUp, title: 'Our Mission', text: 'To build trust between buyers and verified sellers by providing accurate information, seamless communication, and a reputation system that rewards honesty.' }].map((v) => (
+              <motion.div key={v.title} variants={fadeUp}>
+                <Card className="bg-white/[0.03] border-amber-500/20 h-full">
+                  <CardContent className="pt-8 text-center">
+                    <div className="w-14 h-14 rounded-xl bg-amber-400/10 flex items-center justify-center mx-auto mb-5"><v.icon className="text-amber-400" size={28} /></div>
+                    <h3 className="text-xl font-bold text-white mb-3">{v.title}</h3>
+                    <p className="text-neutral-400">{v.text}</p>
+                  </CardContent>
+                </Card>
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
         </div>
       </section>
 
-      {/* Founder's Message */}
-      <section className="py-16 bg-white">
+      {/* Values */}
+      <section className="py-20">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-4xl mx-auto">
-            <Card className="border-[#D4AF37]/20">
-              <CardContent className="pt-8">
+          <motion.div variants={staggerContainer} initial="hidden" whileInView="visible" viewport={{ once: true }} className="text-center mb-12 max-w-2xl mx-auto">
+            <motion.h2 variants={fadeUp} className="text-3xl md:text-4xl font-bold text-white mb-3">Our Core Values</motion.h2>
+            <motion.p variants={fadeUp} className="text-neutral-400">The principles that guide everything we do.</motion.p>
+          </motion.div>
+          <motion.div variants={staggerContainer} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.2 }} className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {values.map((v) => (
+              <motion.div key={v.title} variants={fadeUp}>
+                <Card className="bg-white/[0.03] border-white/10 hover:border-amber-500/30 transition-colors h-full group">
+                  <CardContent className="pt-6 text-center">
+                    <div className="w-12 h-12 rounded-xl bg-amber-400/10 flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
+                      <v.icon className="text-amber-400" size={24} />
+                    </div>
+                    <h3 className="text-white font-semibold mb-2">{v.title}</h3>
+                    <p className="text-neutral-400 text-sm">{v.description}</p>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            ))}
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Stats */}
+      <section className="py-16 bg-white/[0.02] border-y border-white/10">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div variants={staggerContainer} initial="hidden" whileInView="visible" viewport={{ once: true }} className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+            {stats.map((s) => (
+              <motion.div key={s.label} variants={fadeUp}>
+                <div className="text-4xl md:text-5xl font-bold text-amber-400 mb-2">{s.value}</div>
+                <div className="text-neutral-400">{s.label}</div>
+              </motion.div>
+            ))}
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Founder */}
+      <section className="py-20">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-3xl">
+          <motion.div variants={slideInLeft} initial="hidden" whileInView="visible" viewport={{ once: true }}>
+            <Card className="bg-white/[0.03] border-white/10">
+              <CardContent className="pt-10">
                 <div className="text-center mb-8">
-                  <h2 className="text-3xl mb-2 text-[#0C0C0C]">A Message from Our Founder</h2>
-                  <div className="w-24 h-1 bg-[#D4AF37] mx-auto"></div>
+                  <h2 className="text-3xl font-bold text-white mb-2">A Message from Our Founder</h2>
+                  <div className="w-16 h-1 bg-amber-400 mx-auto rounded-full" />
                 </div>
-                <div className="space-y-4 text-gray-700 text-lg">
-                  <p>
-                    "When I started ElixirAutoX, I had one simple goal: to make car buying and 
-                    selling in Africa as trustworthy and seamless as it should be. Too many people 
-                    have been burned by fake listings, dishonest dealers, and unclear transactions.
-                  </p>
-                  <p>
-                    We're changing that narrative. Every dealer on our platform is verified. 
-                    Every listing is checked for accuracy. Every transaction is built on trust 
-                    and transparency.
-                  </p>
-                  <p>
-                    As we grow, we remain committed to our founding principles: integrity, 
-                    precision, and premium experiences for everyone. Whether you're buying 
-                    your first car or your tenth, whether you're a dealer just starting out 
-                    or running an established showroom—ElixirAutoX is here to elevate your 
-                    experience to the gold standard.
-                  </p>
-                  <p>
-                    Thank you for trusting us with your automotive journey."
-                  </p>
+                <div className="space-y-4 text-neutral-300 text-lg leading-relaxed">
+                  <p>"When I started ElixrAuto, I had one goal: to make car buying and selling in Africa as trustworthy as it should be. Too many people have been burned by fake listings and dishonest dealers."</p>
+                  <p>"We're changing that. Every seller is verified. Every transaction is built on trust, transparency, and a reputation system that follows you."</p>
+                  <p>"Whether you're buying your first car or your tenth — ElixrAuto elevates your experience to the gold standard. Thank you for trusting us with your automotive journey."</p>
                 </div>
                 <div className="mt-8 text-center">
-                  <p className="text-[#0C0C0C]">ElixirAutoX Team</p>
-                  <p className="text-sm text-gray-500">Founder & CEO</p>
+                  <p className="text-white font-semibold">ElixrAuto Team</p>
+                  <p className="text-sm text-neutral-500">Founder &amp; CEO</p>
                 </div>
               </CardContent>
             </Card>
-          </div>
-        </div>
-      </section>
-
-      {/* Stats Section */}
-      <section className="py-16 bg-[#D4AF37]">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8 text-center">
-            <div>
-              <div className="text-4xl md:text-5xl text-[#0C0C0C] mb-2">500+</div>
-              <div className="text-[#0C0C0C]">Verified Dealers</div>
-            </div>
-            <div>
-              <div className="text-4xl md:text-5xl text-[#0C0C0C] mb-2">2,000+</div>
-              <div className="text-[#0C0C0C]">Premium Listings</div>
-            </div>
-            <div>
-              <div className="text-4xl md:text-5xl text-[#0C0C0C] mb-2">10,000+</div>
-              <div className="text-[#0C0C0C]">Happy Customers</div>
-            </div>
-            <div>
-              <div className="text-4xl md:text-5xl text-[#0C0C0C] mb-2">100%</div>
-              <div className="text-[#0C0C0C]">Verified Listings</div>
-            </div>
-          </div>
+          </motion.div>
         </div>
       </section>
     </div>

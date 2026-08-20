@@ -1,97 +1,69 @@
+import { Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
 import { Card, CardContent } from './ui/card';
 import { Badge } from './ui/badge';
 import { Button } from './ui/button';
-import { ImageWithFallback } from './figma/ImageWithFallback';
 import { CheckCircle, MapPin, Gauge, Calendar } from 'lucide-react';
+import { ImageWithFallback } from './figma/ImageWithFallback';
+import { SellerSnippet } from './SellerSnippet';
+import { listings } from '../lib/mockData';
 
 export default function FeaturedListings() {
-  const listings = [
-    {
-      id: 1,
-      title: '2023 Mercedes-Benz S-Class',
-      price: '₦85,000,000',
-      image: 'https://images.unsplash.com/photo-1650256213562-487db281610b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxibGFjayUyMGx1eHVyeSUyMHNlZGFufGVufDF8fHx8MTc2MTQzODMyNnww&ixlib=rb-4.1.0&q=80&w=1080',
-      year: '2023',
-      mileage: '8,500 km',
-      transmission: 'Automatic',
-      location: 'Lagos, Nigeria',
-      condition: 'Excellent',
-      verified: true,
-    },
-    {
-      id: 2,
-      title: '2022 Range Rover Sport',
-      price: '₦72,000,000',
-      image: 'https://images.unsplash.com/photo-1570829194611-71a926d70ff8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxsdXh1cnklMjBzdXYlMjBjYXJ8ZW58MXx8fHwxNzYxNDEyMzQ4fDA&ixlib=rb-4.1.0&q=80&w=1080',
-      year: '2022',
-      mileage: '15,000 km',
-      transmission: 'Automatic',
-      location: 'Abuja, Nigeria',
-      condition: 'Excellent',
-      verified: true,
-    },
-    {
-      id: 3,
-      title: '2024 Porsche 911 Carrera',
-      price: '₦95,000,000',
-      image: 'https://images.unsplash.com/photo-1517153192978-b2e379ac0710?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxzcG9ydHMlMjBjYXIlMjBnb2xkfGVufDF8fHx8MTc2MTQzOTA1NHww&ixlib=rb-4.1.0&q=80&w=1080',
-      year: '2024',
-      mileage: '2,000 km',
-      transmission: 'Automatic',
-      location: 'Lagos, Nigeria',
-      condition: 'Brand New',
-      verified: true,
-    },
-  ];
+  const featured = listings.slice(0, 3);
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-      {listings.map((listing) => (
-        <Card key={listing.id} className="overflow-hidden hover:shadow-xl transition-shadow border-[#D4AF37]/20">
-          <div className="relative">
-            <ImageWithFallback
-              src={listing.image}
-              alt={listing.title}
-              className="w-full h-64 object-cover"
-            />
-            {listing.verified && (
-              <Badge className="absolute top-4 right-4 bg-[#D4AF37] text-[#0C0C0C] border-0">
-                <CheckCircle size={14} className="mr-1" />
-                Verified
-              </Badge>
-            )}
-            <Badge className="absolute top-4 left-4 bg-[#0C0C0C] text-white border-0">
-              {listing.condition}
-            </Badge>
-          </div>
-
-          <CardContent className="p-6">
-            <h3 className="text-xl mb-2 text-[#0C0C0C]">{listing.title}</h3>
-            <p className="text-2xl text-[#D4AF37] mb-4">{listing.price}</p>
-
-            <div className="space-y-2 mb-4">
-              <div className="flex items-center text-gray-600 text-sm">
-                <Calendar size={16} className="mr-2" />
-                <span>{listing.year}</span>
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {featured.map((listing, index) => (
+        <motion.div
+          key={listing.id}
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 0.5, delay: index * 0.1, ease: [0.22, 1, 0.36, 1] }}
+        >
+          <Link to={`/listings/${listing.id}`}>
+            <Card className="group overflow-hidden border-white/10 bg-white/[0.03] hover:bg-white/[0.06] hover:border-amber-500/30 transition-all duration-300 hover:-translate-y-1 h-full">
+              <div className="relative overflow-hidden rounded-t-xl">
+                <ImageWithFallback
+                  src={listing.image}
+                  alt={listing.title}
+                  className="w-full h-52 object-cover group-hover:scale-105 transition-transform duration-500"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                {listing.verified && (
+                  <Badge className="absolute top-3 right-3 bg-emerald-500/90 text-white border-0 backdrop-blur-sm">
+                    <CheckCircle size={12} className="mr-1" /> Verified
+                  </Badge>
+                )}
+                <Badge className="absolute top-3 left-3 bg-black/60 text-white border-0 backdrop-blur-sm">
+                  {listing.condition}
+                </Badge>
+                <div className="absolute bottom-3 left-3 right-3">
+                  <p className="text-white font-bold text-lg drop-shadow">{listing.title}</p>
+                </div>
               </div>
-              <div className="flex items-center text-gray-600 text-sm">
-                <Gauge size={16} className="mr-2" />
-                <span>{listing.mileage} • {listing.transmission}</span>
-              </div>
-              <div className="flex items-center text-gray-600 text-sm">
-                <MapPin size={16} className="mr-2" />
-                <span>{listing.location}</span>
-              </div>
-            </div>
 
-            <Button
-              className="w-full bg-[#D4AF37] text-[#0C0C0C] hover:bg-[#C0C0C0]"
-              onClick={() => window.open('https://wa.me/2348138964310', '_blank')}
-            >
-              Contact Dealer
-            </Button>
-          </CardContent>
-        </Card>
+              <CardContent className="p-5">
+                <p className="text-2xl font-bold text-amber-400 mb-3">{listing.price}</p>
+
+                <div className="flex flex-wrap gap-x-4 gap-y-1.5 text-neutral-400 text-sm mb-3">
+                  <span className="flex items-center gap-1.5"><Calendar size={14} />{listing.year}</span>
+                  <span className="flex items-center gap-1.5"><Gauge size={14} />{listing.mileage}</span>
+                  <span className="flex items-center gap-1.5"><MapPin size={14} />{listing.location}</span>
+                </div>
+
+                <SellerSnippet sellerId={listing.seller_id} />
+
+                <Button
+                  className="w-full mt-4 bg-amber-400 text-neutral-900 hover:bg-amber-300 font-semibold"
+                  onClick={(e) => e.preventDefault()}
+                >
+                  Message Seller
+                </Button>
+              </CardContent>
+            </Card>
+          </Link>
+        </motion.div>
       ))}
     </div>
   );

@@ -1,124 +1,67 @@
 import { Link } from 'react-router-dom';
-import { Instagram, Twitter, MessageCircle } from 'lucide-react';
+import { Instagram, Twitter, Car, LifeBuoy } from 'lucide-react';
 
 export default function Footer() {
   return (
-    <footer className="bg-[#0C0C0C] text-white border-t border-[#D4AF37]">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+    <footer className="border-t border-white/10 bg-[#0A0A0B]">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-14">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
           {/* Brand */}
-          <div>
-            <div className="flex items-center space-x-3 mb-4">
-              <div className="w-12 h-12 bg-[#D4AF37] rounded-full flex items-center justify-center">
-                <span className="text-[#0C0C0C]">EA</span>
+          <div className="col-span-2 md:col-span-1">
+            <div className="flex items-center gap-2.5 mb-4">
+              <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-amber-400 to-amber-600 flex items-center justify-center">
+                <Car className="text-neutral-900" size={20} />
               </div>
-              <div>
-                <div className="text-[#D4AF37] tracking-wide">ELIXIR AUTOX</div>
-              </div>
+              <div className="font-bold text-white text-lg">Elixr<span className="text-amber-400">Auto</span></div>
             </div>
-            <p className="text-[#C0C0C0] text-sm">
-              The Gold Standard in Deals. Connecting verified car dealers with trusted buyers across Africa.
+            <p className="text-neutral-400 text-sm max-w-xs">
+              The peer-to-peer marketplace connecting verified sellers with trusted buyers across Africa.
             </p>
           </div>
 
-          {/* Quick Links */}
+          {/* Marketplace */}
           <div>
-            <h3 className="text-[#D4AF37] mb-4">Quick Links</h3>
-            <ul className="space-y-2">
-              <li>
-                <Link to="/" className="text-[#C0C0C0] hover:text-[#D4AF37] transition-colors">
-                  Home
-                </Link>
-              </li>
-              <li>
-                <Link to="/about" className="text-[#C0C0C0] hover:text-[#D4AF37] transition-colors">
-                  About Us
-                </Link>
-              </li>
-              <li>
-                <Link to="/listings" className="text-[#C0C0C0] hover:text-[#D4AF37] transition-colors">
-                  View Cars
-                </Link>
-              </li>
-              <li>
-                <Link to="/blog" className="text-[#C0C0C0] hover:text-[#D4AF37] transition-colors">
-                  Blog
-                </Link>
-              </li>
+            <h3 className="text-white font-semibold mb-4 text-sm">Marketplace</h3>
+            <ul className="space-y-2.5">
+              <li><Link to="/listings" className="text-neutral-400 hover:text-amber-400 transition-colors text-sm">Browse Cars</Link></li>
+              <li><Link to="/sell" className="text-neutral-400 hover:text-amber-400 transition-colors text-sm">Sell a Car</Link></li>
+              <li><Link to="/dealer-signup" className="text-neutral-400 hover:text-amber-400 transition-colors text-sm">Join as Dealer</Link></li>
+              <li><Link to="/crypto" className="text-neutral-400 hover:text-amber-400 transition-colors text-sm">Crypto Payments</Link></li>
             </ul>
           </div>
 
-          {/* For Dealers */}
+          {/* Community */}
           <div>
-            <h3 className="text-[#D4AF37] mb-4">For Dealers</h3>
-            <ul className="space-y-2">
-              <li>
-                <Link to="/dealer-signup" className="text-[#C0C0C0] hover:text-[#D4AF37] transition-colors">
-                  Join as Dealer
-                </Link>
-              </li>
-              <li>
-                <Link to="/crypto" className="text-[#C0C0C0] hover:text-[#D4AF37] transition-colors">
-                  Crypto Payments
-                </Link>
-              </li>
-              <li>
-                <a href="#" className="text-[#C0C0C0] hover:text-[#D4AF37] transition-colors">
-                  Pricing (₦15K/month)
-                </a>
-              </li>
+            <h3 className="text-white font-semibold mb-4 text-sm">Community</h3>
+            <ul className="space-y-2.5">
+              <li><Link to="/community" className="text-neutral-400 hover:text-amber-400 transition-colors text-sm">Discussions</Link></li>
+              <li><Link to="/community/create" className="text-neutral-400 hover:text-amber-400 transition-colors text-sm">Write a Post</Link></li>
+              <li><Link to="/about" className="text-neutral-400 hover:text-amber-400 transition-colors text-sm">About Us</Link></li>
             </ul>
           </div>
 
-          {/* Contact */}
+          {/* Help */}
           <div>
-            <h3 className="text-[#D4AF37] mb-4">Contact Us</h3>
-            <ul className="space-y-2 mb-4">
-              <li className="text-[#C0C0C0]">
-                <a href="https://wa.me/2348138964310" className="hover:text-[#D4AF37] transition-colors">
-                  WhatsApp
-                </a>
-              </li>
-              <li>
-                <Link to="/contact" className="text-[#C0C0C0] hover:text-[#D4AF37] transition-colors">
-                  Contact Form
-                </Link>
-              </li>
+            <h3 className="text-white font-semibold mb-4 text-sm">Support</h3>
+            <ul className="space-y-2.5">
+              <li><Link to="/help" className="text-neutral-400 hover:text-amber-400 transition-colors text-sm flex items-center gap-1.5"><LifeBuoy size={14} /> Help Center</Link></li>
+              <li><Link to="/help" className="text-neutral-400 hover:text-amber-400 transition-colors text-sm">Report a Problem</Link></li>
+              <li><a href="mailto:support@elixrauto.com" className="text-neutral-400 hover:text-amber-400 transition-colors text-sm">support@elixrauto.com</a></li>
             </ul>
-            
-            {/* Social Media */}
-            <div className="flex space-x-4">
-              <a 
-                href="https://instagram.com" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="text-[#C0C0C0] hover:text-[#D4AF37] transition-colors"
-              >
-                <Instagram size={20} />
+            <div className="flex space-x-3 mt-5">
+              <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="w-9 h-9 rounded-lg bg-white/5 flex items-center justify-center text-neutral-400 hover:text-amber-400 hover:bg-white/10 transition-colors">
+                <Instagram size={18} />
               </a>
-              <a 
-                href="https://twitter.com" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="text-[#C0C0C0] hover:text-[#D4AF37] transition-colors"
-              >
-                <Twitter size={20} />
-              </a>
-              <a 
-                href="https://wa.me/2348138964310" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="text-[#C0C0C0] hover:text-[#D4AF37] transition-colors"
-              >
-                <MessageCircle size={20} />
+              <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="w-9 h-9 rounded-lg bg-white/5 flex items-center justify-center text-neutral-400 hover:text-amber-400 hover:bg-white/10 transition-colors">
+                <Twitter size={18} />
               </a>
             </div>
           </div>
         </div>
 
-        {/* Bottom Bar */}
-        <div className="border-t border-[#D4AF37] mt-8 pt-8 text-center text-[#C0C0C0] text-sm">
-          <p>&copy; {new Date().getFullYear()} ElixirAutoX. All rights reserved. | Built with trust and precision.</p>
+        <div className="border-t border-white/10 mt-12 pt-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-neutral-500 text-xs">
+          <p>&copy; {new Date().getFullYear()} ElixrAuto. All rights reserved.</p>
+          <p className="flex items-center gap-1.5">Built with trust &amp; precision · Peer-to-peer</p>
         </div>
       </div>
     </footer>
